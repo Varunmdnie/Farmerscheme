@@ -1,0 +1,59 @@
+Insert into InsecticideProvider(InsecticideProviderId,InsecticideProviderName,contact,email,companyname,InsecticideProviderrating) values
+(734270748032,"Anam",9535834128,"aman@gmail.com","Nera",4.2),
+(834874708342,"Vijay",8341287296,"vijay@gmail.com","Sobi",4.1),
+(934362574321,"Suresh",6367824821,"suresh@gmail.com","Jojo",4.5),
+(974128613741,"Ramesh",7431286842,"ramesh@gmail.com","Raja",4.6);
+
+
+
+Insert into insecticideproviderandinsecticide(insecticideId,insecticideProviderId) values
+(1,734270748032),
+(2,734270748032),
+(3,834874708342),
+(4,834874708342),
+(1,834874708342),
+(5,934362574321),
+(1,934362574321),
+(4,934362574321),
+(1,974128613741),
+(5,974128613741);
+
+
+
+Insecticide
+
+
+ {
+        "price": 45.0,
+        "insecticideName": "Phorate",
+        "insecticideId": 1
+    },
+    {
+        "price": 90.0,
+        "insecticideName": "Fipronil",
+        "insecticideId": 2
+    },
+    {
+        "price": 50.0,
+        "insecticideName": "Carbofuron",
+        "insecticideId": 3
+    },
+    {
+        "price": 70.0,
+        "insecticideName": "Dicofol",
+        "insecticideId": 4
+    },
+    {
+        "price": 60.0,
+        "insecticideName": "Sulphur",
+        "insecticideId": 5
+    },
+    {
+        "price": 45.0,
+        "insecticideName": "Profenofos",
+        "insecticideId": 6
+    }
+
+
+
+

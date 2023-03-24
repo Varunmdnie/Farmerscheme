@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<meta charset="ISO-8859-1">
+<title>Farmer Page</title>
+</head>
+<body>
+
+	<script>
+		var request;
+		function viewFarmer(){
+			document.getElementById("tableDataCropForSale").style.display="none";
+			document.getElementById("addCrops").style.display="none";
+			
+
+			document.getElementById("farmerAddForm").style.display="none";
+			document.getElementById("farmerInfo").style.display="contents";
+			farmerId = document.getElementById("farmerIdInput").value;
+			document.getElementById("farmerIdInfoForm").value = farmerId;
+			console.log(farmerId);
+			loadFarmerInfo();
+		}
+
+		function loadFarmerInfo(){
+			let bidderId = document.getElementById("farmerIdInfoForm").value;
+			console.log(farmerId);
+			console.log("here");
+			var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/all/' + farmerId;
+			if(window.XMLHttpRequest){
+				request=new XMLHttpRequest();
+			}
+			else if(window.ActiveXObject){ 
+				request=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			try {
+				request.onreadystatechange=fun;
+				request.open("GET",url,true);
+				request.send();
+				
+			} catch (e) {
+				alert("Unable to connect to the server");
+			}
+		}
+		
+		
+		
+		function fun()
+		{
+			if(request.readyState==0){
+				console.log("request not initialized");
+			}
+			else{
+				console.log("request initialized");
+			}
+			if(request.readyState==1){
+				console.log("connected to the server");
+			}
+			else{
+				console.log("request initialized");
+			}
+			if(request.readyState==4) { 
+				var value=[]
+				value= JSON.parse(request.response);
+			    console.log(value);
+			    document.getElementById("farmerNameInfoForm").value = value.farmerName;
+			    document.getElementById("contactInfoForm").value = value.contact;
+			    document.getElementById("cityInfoForm").value = value.city;
+			    document.getElementById("emailIdInfoForm").value = value.emailId;
+			    document.getElementById("farmerRatingInfoForm").value = value.farmerRating;
+		    }
+		}
+		
+		function updateFarmerInfo(){
+			farmerId = document.getElementById("farmerIdInfoForm").value;
+			farmerName = document.getElementById("farmerNameInfoForm").value;
+			contact = document.getElementById("contactInfoForm").value;
+			city = document.getElementById("cityInfoForm").value;
+			emailId = document.getElementById("emailIdInfoForm").value;
+			farmerRating = document.getElementById("farmerRatingInfoForm").value;
+
+
+			let data = {
+					 "farmerId": 307331520399,
+				        "farmerName": "Ambika",
+				        "contact": 8431895677,
+				        "city": "Bagalkot",
+				        "emailId": "suryavanshiambika2@gmail.com",
+				        "farmerRating": 4.2,
+				        "cropForSale": null,
+				        "crop": null
+		    };
+			data.farmerId = farmerId;
+			data.farmerName = farmerName;
+			data.contact = contact;
+			data.city = city;
+			data.emailId = emailId;
+			data.farmerRating = farmerRating;
+			
+			
+			var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/updateFarmer';
+			
+			
+			console.log(url);
+			
+			if(window.XMLHttpRequest){
+				request=new XMLHttpRequest();
+			}
+			else if(window.ActiveXObject){ 
+				request=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			try {
+				request.open("PUT",url,true);
+				request.setRequestHeader("Content-Type","application/json");
+				request.send(JSON.stringify(data));
+				location.reload();
+				alert("Farmer modified")
+				
+			} catch (e) {
+				alert("Farmer cannot be modified");
+			}
+		}
+		
+		function loadRegisterFarmerForm(){
+			document.getElementById("tableDataCropForSale").style.display="none";
+			document.getElementById("addCrops").style.display="none";
+			document.getElementById("farmerCropsForSaleForm").style.display="none";
+			
+			document.getElementById("farmerInfo").style.display="none";
+
+			document.getElementById("farmerAddForm").style.display="contents";
+			
+		} 
+	
+		
+		function sendFarmerInfo(){
+			let farmerId = document.getElementById("farmerIdInput").value;
+			console.log(farmerId);
+			var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/all/' + farmerId;
+			if(window.XMLHttpRequest){
+				request=new XMLHttpRequest();
+			}
+			else if(window.ActiveXObject){ 
+				request=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			try {
+				request.onreadystatechange=getInfoFarmer;
+				request.open("GET",url,true);
+				request.send();
+				
+			} catch (e) {
+				alert("Unable to connect to the server");
+			}
+		}
+		
+		
+		
+		function addCropForSaleDetail(){
+			var cropId = document.getElementById("cropIdInput").value;
+			quantity = document.getElementById("quantityInput").value;
+			minimumPrice = document.getElementById("priceInput").value;
+			farmerId = document.getElementById("farmerIdInput").value;
+			timeUpload = document.getElementById("timeToUploadInput").value;
+			
+			
+			alert(farmerId);
+			
+			
+			let data = {
+			        "cropId": 2,
+			        "cropName": "null",
+			        "cropForSaleId": 6,
+			        "quantity": 20.0,
+			        "minimumPrice": 15000.0,
+			        "farmerId": 996234167470,
+			        "timeUpload": "2023-03-21"
+			    };
+			
+			data.cropId = cropId;
+			
+			
+			
+			data.quantity = quantity;
+			data.minimumPrice = minimumPrice;
+			data.farmerId=farmerId;
+			data.timeUpload=timeUpload;
+			
+			
+			var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/addCropForSale';
+			
+			
+			console.log(url);
+			
+			if(window.XMLHttpRequest){
+				request=new XMLHttpRequest();
+			}
+			else if(window.ActiveXObject){ 
+				request=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			try {
+				request.open("POST",url,true);
+				request.setRequestHeader("Content-Type","application/json");
+				request.send(JSON.stringify(data));
+				location.reload();
+				alert("Crop For Sale added")
+				
+			} catch (e) {
+				alert("Crop cannot be added");
+			}
+		}
+	function addCrops(){
+		document.getElementById("tableDataCropForSale").style.display="none";
+		document.getElementById("addCrops").style.display="contents";
+		document.getElementById("farmerInfo").style.display="none";
+		document.getElementById("farmerAddForm").style.display="none";
+
+
+		console.log("clicked");
+	}
+	function addCropForSale(){
+		
+		
+	}	
+	
+	function getCropForSale(){
+
+		document.getElementById("tableDataCropForSale").style.display="contents";
+		document.getElementById("addCrops").style.display="none";
+		document.getElementById("farmerInfo").style.display="none";
+		document.getElementById("farmerAddForm").style.display="none";
+
+
+		sendCropForSaleInfo();
+	}
+	
+	function sendCropForSaleInfo(){
+		
+		let farmerId = document.getElementById("farmerIdInput").value;
+		console.log(farmerId);
+		var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/allCrop/' + farmerId;
+		if(window.XMLHttpRequest){
+			request=new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){ 
+			request=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		try {
+			request.onreadystatechange=getInfoCrop;
+			request.open("GET",url,true);
+			request.send();
+			
+		} catch (e) {
+			alert("Unable to connect to the server");
+		}
+	}
+	
+	function getInfoCrop()
+	{
+		if(request.readyState==0){
+			console.log("request not initialized");
+		}
+		else{
+			console.log("request initialized");
+		}
+		if(request.readyState==1){
+			console.log("connected to the server");
+		}
+		else{
+			console.log("request initialized");
+		}
+		if(request.readyState==4) { 
+			var value=[]
+			value= JSON.parse(request.response);
+		    console.log(value);
+		    let row ='';
+		    
+		   
+		    value.forEach((v)=>{
+		    	 row +=`<tr>`;
+		    	 cropForSaleId=v.cropForSaleId;
+		    	for(let key in v )
+		    		{
+		    		row+=`<td>${v[key]}</td>`;
+		    		}
+		    	row+=`<td><button type='button' class='btn btn-primary btn-sm' onclick=getBidFarmer(${cropForSaleId}) >Show my Bid </button></td>`;
+		    	row +=`</tr>`;
+		    
+		    })
+		     
+		    document.getElementById("cropForSale-table-body").innerHTML =row;
+	    }
+	}
+	
+	function getBidFarmer(cropForSaleId){
+		document.getElementById("tableDataCropForSale").style.display="none";
+		document.getElementById("addCrops").style.display="none";
+		document.getElementById("farmerInfo").style.display="none";
+		document.getElementById("farmerAddForm").style.display="none";
+		document.getElementById("farmerBid").style.display="contents";
+
+		console.log(cropForSaleId);
+		
+		var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/allBids/' + cropForSaleId;
+		if(window.XMLHttpRequest){
+			request=new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){ 
+			request=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		try {
+			request.onreadystatechange=getInfoBid;
+			request.open("GET",url,true);
+			request.send();
+			
+		} catch (e) {
+			alert("Unable to connect to the server");
+		}
+	}
+	
+	function getInfoBid(){
+		console.log("getInfoBid called....")
+		if(request.readyState==0){
+			console.log("request not initialized");
+		}
+		else{
+			console.log("request initialized");
+		}
+		if(request.readyState==1){
+			console.log("connected to the server");
+		}
+		else{
+			console.log("request initialized");
+		}
+		if(request.readyState==4) { 
+			var value=[]
+			value= JSON.parse(request.response);
+		    console.log(value);
+		    let row ='';
+		    
+		   
+		    value.forEach((v)=>{
+		    	 row +=`<tr>`;
+		    	 
+		    	for(let key in v )
+		    		{
+		    		row+=`<td>${v[key]}</td>`;
+		    		}
+		    	row+=`<td><button type='button' class='btn btn-primary btn-sm'  >Confirm </button></td>`;
+		    	row +=`</tr>`;
+		    
+		    })
+		     
+		    document.getElementById("farmerBid-table-body").innerHTML =row;
+	    }
+	
+		
+	}
+		
+	
+	
+	
+	function sendFarmerDetailInfo(){
+		
+		var farmerId = document.getElementById("farmerIdInputAddForm").value;
+		farmerName = document.getElementById("farmerNameInputAddForm").value;
+		contact = document.getElementById("contactInputAddForm").value;
+		city = document.getElementById("cityInputAddForm").value;
+		emailId = document.getElementById("emailInputAddForm").value;
+		farmerRating = document.getElementById("farmerRatingInputAddForm").value;
+		
+		alert(farmerId);
+		
+		
+		let data = {
+				"farmerId": 515557953362,
+			    "farmerName": "Mukhil",
+			    "contact": 9842561871,
+			    "city": "Coimbatore",
+			    "emailId": "mukhil2011@gmail.com",
+			    "farmerRating": 4.0,
+			    "crop": null,
+			    "cropForSale": null
+	    };
+		data.farmerId = farmerId;
+		data.farmerName = farmerName;
+		data.contact = contact;
+		data.city = city;
+		data.emailId = emailId;
+		data.farmerRating = farmerRating;
+		
+		
+		var url='http://localhost:8080/FarmerSchemeV1/farmerService/farmer/addFarmer';
+		
+		
+		console.log(url);
+		
+		if(window.XMLHttpRequest){
+			request=new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){ 
+			request=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		try {
+			request.open("POST",url,true);
+			request.setRequestHeader("Content-Type","application/json");
+			request.send(JSON.stringify(data));
+			location.reload();
+			alert("Farmer added")
+			
+		} catch (e) {
+			alert("Farmer cannot be added");
+		}
+	}
+	function loadHome(){
+		location.reload();
+	}
+	
+		
+	</script>
+
+	<nav class="navbar bg-body-tertiary">
+		  <div class="container-fluid">
+		  
+		    <a class="navbar-brand" onclick=loadHome()>
+		     Farmer Page
+		    </a>
+		  </div>
+	</nav>
+
+	
+
+
+<body style="background-color:aquamarine;">
+<br><br>
+<div style="padding-left:30px;padding-right:30px;">
+	
+	
+	<button onclick="loadRegisterFarmerForm()" type="button" class="btn btn-outline-primary">Register Farmer</button>
+	
+	<br><br>
+<div id="farmerCropsForSaleForm"  >
+	
+	<label for="farmerIdInput"><b>Enter your Adhaar Id</b></label>
+	<input id="farmerIdInput" name="farmerIdInput">
+	<input type="button" class="btn btn-success btn-sm" value="View my crops" onclick="getCropForSale()">
+	<input type="button" class="btn btn-success btn-sm" value="Add my crops" onclick="addCrops()">
+	<input type="button" class="btn btn-success btn-sm" value="View farmer" onclick="viewFarmer()">
+
+</div>
+
+<div id="tableDataCropForSale" style="display:none">
+		<table class="table">
+		  	<thead class="table-dark">
+		    	<tr>
+					
+					<th scope="col">Crop Id</th>
+					<th scope="col">Crop Name</th>
+					<th scope="col">Crop For Sale Id</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Minimum Price</th>
+					
+					<th scope="col">Farmer Id</th>
+					
+					
+					<th scope="col">Time of Upload</th>
+					<th scope="col">Bids</th>
+				</tr>
+		  	</thead>
+		  
+		  	<tbody id="cropForSale-table-body">
+			</tbody>
+	  
+		</table>
+	</div>
+
+<div id="addCrops" style="display:none">
+	<br><label for="cropIdInput">Enter the cropId</label><input id="cropIdInput" name="cropIdInput"><br>
+
+	<label for="quantityInput">Enter the quantity </label><input id="quantityInput" name="quantityInput"><br>
+	<label for="priceInput">Enter the minimum price</label><input id="priceInput" name="priceInput"><br>
+	<label for="farmerIdInput">Enter your Adhaar Id</label><input id="farmerIdInput" name="farmerIdInput"><br>
+	<label for="timeToUploadInput">Enter the date</label><input id="timeToUploadInput" name="timeToUploadInput"><br>
+	<input type="button" class="btn btn-success btn-sm" value="Add" onclick="addCropForSaleDetail()">
+
+</div>
+
+
+	
+<div id="farmerAddForm" style="display:none">
+	
+	<h1 class="display-6">Farmer Registration</h1>
+	<br>
+	
+	<label for="farmerIdInputAddForm">Enter you Aadhar Id</label>
+	<input id="farmerIdInputAddForm" name="farmerIdInput">
+	<br><br>
+	<label for="farmerNameInputAddForm">Enter you Name</label>
+	<input id="farmerNameInputAddForm" name="farmerNameInput">
+	<br><br>
+	<label for="contactInputAddForm">Enter you contact</label>
+	<input id="contactInputAddForm" name="contactInput">
+	<br><br>
+	<label for="cityInputAddForm">Enter you city</label>
+	<input id="cityInputAddForm" name="cityInput">
+	<br><br>
+	<label for="emailInputAddForm">Enter you Email Id</label>
+	<input id="emailInputAddForm" name="emailInput">
+	<br><br>
+	<label for="farmerRatingInputAddForm">Enter you Rating as per government</label>
+	<input id="farmerRatingInputAddForm" name="farmerRatingInput">
+	<br><br>
+	
+	<input type="button" class="btn btn-success btn-sm" value="Register Me!" onclick=sendFarmerDetailInfo()>
+	
+
+</div>
+	<div id="farmerInfo" style="display:none">
+	
+	<h1 class="display-6">Farmer Information</h1>
+	<br>
+	
+	<label for="farmerIdInfoForm">Enter you Aadhaar Id</label>
+	<input id="farmerIdInfoForm" name="farmerIdInfo" disabled>
+	<br><br>
+	<label for="farmerNameInfoForm">Enter you Name</label>
+	<input id="farmerNameInfoForm" name="farmerNameInfo">
+	<br><br>
+	<label for="contactInfoForm">Enter you contact</label>
+	<input id="contactInfoForm" name="contactInfo">
+	<br><br>
+	<label for="cityInfoForm">Enter you city</label>
+	<input id="cityInfoForm" name="cityInfo">
+	<br><br>
+	<label for="emailIdInfoForm">Enter you Email Id</label>
+	<input id="emailIdInfoForm" name="emailIdInfo">
+	<br><br>
+	<label for="farmerRatingInfoForm">Enter you Rating as per government</label>
+	<input id="farmerRatingInfoForm" name="farmerRatingInfo">
+	<br><br>
+	
+	<input type="button" class="btn btn-success btn-sm" value="Update My Information!" onclick=updateFarmerInfo()>
+	
+
+</div>
+
+<div id="farmerBid" style="display:none">
+		<table class="table">
+		  	<thead class="table-dark">
+		    	<tr>
+					<th scope="col">Bid Id</th>
+					<th scope="col">Bidder Id</th>
+					<th scope="col">Crop For Sale Id</th>
+					<th scope="col">Amount</th>
+					<th scope="col">Confirmation</th>
+				</tr>
+		  	</thead>
+		  
+		  	<tbody id="farmerBid-table-body">
+			</tbody>
+	  
+		</table>
+	</div>
+
+
+
+</body>
+</html>
